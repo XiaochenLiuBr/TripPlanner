@@ -73,11 +73,29 @@ function insertTripPlan(p) {
       </li>`;
 
   
-  for(let i = 1; i < steps.length - 1; i ++) {
-    
+  for(let i = 1; i < steps.length - 1; i ++) {i
+    if(steps[i].type === "ride") {
+      html += `
+      <li>
+        <i class="fas fa-bus" aria-hidden="true"></i>Ride the ${steps[i].route.name} for ${steps[i].times.durations.total} minutes.
+      </li>
+      `
+    } else if (steps[i].type === "transfer") {
+      html += `
+      <li>
+        <i class="fas fa-ticket-alt" aria-hidden="true"></i>Transfer from stop
+        #${steps[i].from.stop.key} - ${steps[i].from.stop.name} to stop #${steps[i].to.stop.key} - ${steps[i].to.stop.name}
+      </li>
+      `
+    }
   }
 
-  html += ``;
+  html += `
+    <li>
+      <i class="fas fa-walking" aria-hidden="true"></i>Walk for ${steps[steps.length - 1].times.durations.total} minutes to
+      your destination.
+    </li>
+  `;
 
   tripEle.innerHTML = html;
 }
