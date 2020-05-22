@@ -16,7 +16,9 @@ destForm.onsubmit = event => {
 };
 
 launchBtn.onclick = e => {
-  displayTripPlanner(geometries);
+  if(geometries.origin.length !== 0 && geometries.destination.length !== 0) {
+    displayTripPlanner(geometries);
+  }
 };
 
 originsEle.onclick = e => {
@@ -47,7 +49,13 @@ function getGeomtries(e) {
 
 function displayTripPlanner(g) {
   fetch(`https://api.winnipegtransit.com/v3/trip-planner.json?api-key=${transitApiKey}&origin=geo/${g.origin[1]},${g.origin[0]}&destination=geo/${g.destination[1]},${g.destination[0]}`)
-    .then(resp => resp.json())
+    .then(resp => {
+      if(resp.ok) {
+        return resp.json();
+      } else {
+        throw new Error('invalid input');
+      }
+    })
     .then(data => {
       console.log(data)
       insertTripPlan(data)
@@ -55,7 +63,23 @@ function displayTripPlanner(g) {
 }
 
 function insertTripPlan(p) {
+  const steps = p.plans[0].segments;
+  const tripEle = document.querySelector('.my-trip');
+  tripEle.innerHTML = "";
 
+  let html = `<li>
+        <i class="fas fa-walking" aria-hidden="true"></i>Walk for ${steps[0].times.durations.total} minutes
+        to stop #${steps[0].to.stop.key} - ${steps[0].to.stop.name}
+      </li>`;
+
+  
+  for(let i = 1; i < steps.length - 1; i ++) {
+    
+  }
+
+  html += ``;
+
+  tripEle.innerHTML = html;
 }
 
 
