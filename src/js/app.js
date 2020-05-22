@@ -49,8 +49,11 @@ function getGeomtries(e) {
 }
 
 function displayTripPlanner(g) {
-  console.log(g);
-  console.log(g.origin[1])
+  fetch(`https://api.winnipegtransit.com/v3/trip-planner.json?api-key=${transitApiKey}&origin=geo/${g.origin[1]},${g.origin[0]}&destination=geo/${g.destination[1]},${g.destination[0]}`)
+    .then(resp => resp.json())
+    .then(data => {
+      console.log(data)
+    })
 
 }
 
