@@ -5,10 +5,7 @@ const destForm = document.querySelector('.destination-form');
 const originsEle = document.querySelector('.origins');
 const destinationsEle = document.querySelector('.destinations');
 const launchBtn = document.querySelector('button');
-const geometries = {
-                    origin: [],
-                    destination: []
-                  }
+const geometries = {origin: [], destination: []};
 
 originForm.onsubmit = event => {
   displayLocations(event.target.firstElementChild.value, event);
@@ -53,9 +50,14 @@ function displayTripPlanner(g) {
     .then(resp => resp.json())
     .then(data => {
       console.log(data)
+      insertTripPlan(data)
     })
+}
+
+function insertTripPlan(p) {
 
 }
+
 
 function displayLocations(query, event) {
   event.preventDefault();
