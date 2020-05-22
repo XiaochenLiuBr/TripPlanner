@@ -5,6 +5,10 @@ const destForm = document.querySelector('.destination-form');
 const originsEle = document.querySelector('.origins');
 const destinationsEle = document.querySelector('.destinations');
 const launchBtn = document.querySelector('button');
+const geometries = {
+                    origin: [],
+                    destination: []
+                  }
 
 originForm.onsubmit = event => {
   displayLocations(event.target.firstElementChild.value, event);
@@ -15,26 +19,40 @@ destForm.onsubmit = event => {
 };
 
 launchBtn.onclick = e => {
-  displayTripPlanner();
+  displayTripPlanner(geometries);
 };
 
 originsEle.onclick = e => {
-  if(e.target.nodeName === 'LI' ) {
-    const locationEle = e.target.closet('ul').children;
+  getGeomtries(e)
+}
 
-    locationEle.forEach(li => {
-      li.classList.remove('selected');
-    })
-    e.target.classList.add('selected');
-    console.log(e.target.dataset.long, e.target.dataset.lat);
+destinationsEle.onclick = e => {
+  getGeomtries(e)
+}
+
+function getGeomtries(e) {
+  if(e.target.nodeName === 'LI' ) {
+  const locationEle = e.target.closest('ul').children;
+
+  for(let i = 0; i < locationEle.length; i++) {
+    locationEle[i].classList.remove('selected');
+  }
+
+  e.target.classList.toggle('selected');
+
+  if (e.target.closest('ul').classList.contains('origins')) {
+    geometries.origin = [e.target.dataset.long, e.target.dataset.lat];
+    } else {
+    geometries.destination = [e.target.dataset.long, e.target.dataset.lat]
+    }
   }
 }
 
-
-function displayTripPlanner() {
+function displayTripPlanner(g) {
+  console.log(g);
+  console.log(g.origin[1])
 
 }
-
 
 function displayLocations(query, event) {
   event.preventDefault();
