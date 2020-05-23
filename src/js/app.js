@@ -15,12 +15,6 @@ destForm.onsubmit = event => {
   displayLocations(event.target.firstElementChild.value, event);
 };
 
-launchBtn.onclick = e => {
-  if(geometries.origin.length !== 0 && geometries.destination.length !== 0) {
-    displayTripPlanner(geometries);
-  }
-};
-
 originsEle.onclick = e => {
   getGeomtries(e)
 }
@@ -28,6 +22,12 @@ originsEle.onclick = e => {
 destinationsEle.onclick = e => {
   getGeomtries(e)
 }
+
+launchBtn.onclick = e => {
+  if(geometries.origin.length !== 0 && geometries.destination.length !== 0) {
+    displayTripPlanner(geometries);
+  }
+};
 
 function getGeomtries(e) {
   if(e.target.nodeName === 'LI' ) {
@@ -57,8 +57,8 @@ function displayTripPlanner(g) {
       }
     })
     .then(data => {
-      console.log(data)
-      insertTripPlan(data)
+      insertTripPlan(data);
+      console.log(data.plans[0].segments);
     })
 }
 
@@ -72,12 +72,13 @@ function insertTripPlan(p) {
         to stop #${steps[0].to.stop.key} - ${steps[0].to.stop.name}
       </li>`;
 
-  
   for(let i = 1; i < steps.length - 1; i ++) {i
     if(steps[i].type === "ride") {
+      bus = steps[i].route.name === undefined? steps[i].route.key: steps[i].route.name;
+
       html += `
       <li>
-        <i class="fas fa-bus" aria-hidden="true"></i>Ride the ${steps[i].route.name} for ${steps[i].times.durations.total} minutes.
+        <i class="fas fa-bus" aria-hidden="true"></i>Ride the ${bus} for ${steps[i].times.durations.total} minutes.
       </li>
       `
     } else if (steps[i].type === "transfer") {
@@ -100,14 +101,12 @@ function insertTripPlan(p) {
   tripEle.innerHTML = html;
 }
 
-
 function displayLocations(query, event) {
   event.preventDefault();
 
   fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${query}.json?access_token=${mapboxgKey}&limit=10&bbox=-97.325875, 49.766204, -96.953987, 49.99275`)
    .then(resp => resp.json())
    .then(data => {
-      console.log(data);
       insertLocationList(data, event);
     });
 }
