@@ -30,20 +30,21 @@ launchBtn.onclick = e => {
 };
 
 function getGeomtries(e) {
-  if(e.target.nodeName === 'LI' ) {
   const locationEle = e.target.closest('ul').children;
+  console.log(e.target);
+  if(locationEle.length !== 0) {
 
-  for(let i = 0; i < locationEle.length; i++) {
-    locationEle[i].classList.remove('selected');
-  }
-
-  e.target.classList.toggle('selected');
-
-  if (e.target.closest('ul').classList.contains('origins')) {
-    geometries.origin = [e.target.dataset.long, e.target.dataset.lat];
-    } else {
-    geometries.destination = [e.target.dataset.long, e.target.dataset.lat]
+    for(let i = 0; i < locationEle.length; i++) {
+      locationEle[i].classList.remove('selected');
     }
+    console.log(e.target.closest('li'));
+    e.target.closest('li').classList.toggle('selected');
+
+    if (e.target.closest('ul').classList.contains('origins')) {
+      geometries.origin = [e.target.closest('li').dataset.long, e.target.closest('li').dataset.lat];
+      } else {
+      geometries.destination = [e.target.closest('li').dataset.long, e.target.closest('li').dataset.lat]
+      }
   }
 }
 
