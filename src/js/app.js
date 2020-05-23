@@ -31,19 +31,20 @@ launchBtn.onclick = e => {
 
 function getGeomtries(e) {
   const locationEle = e.target.closest('ul').children;
-  console.log(e.target);
+  const liEle = e.target.closest('li');
+
   if(locationEle.length !== 0) {
 
     for(let i = 0; i < locationEle.length; i++) {
       locationEle[i].classList.remove('selected');
     }
-    console.log(e.target.closest('li'));
-    e.target.closest('li').classList.toggle('selected');
+
+    liEle.classList.toggle('selected');
 
     if (e.target.closest('ul').classList.contains('origins')) {
-      geometries.origin = [e.target.closest('li').dataset.long, e.target.closest('li').dataset.lat];
+      geometries.origin = [liEle.dataset.long, liEle.dataset.lat];
       } else {
-      geometries.destination = [e.target.closest('li').dataset.long, e.target.closest('li').dataset.lat]
+      geometries.destination = [liEle.dataset.long, liEle.dataset.lat]
       }
   }
 }
@@ -59,7 +60,6 @@ function displayTripPlanner(g) {
     })
     .then(data => {
       insertTripPlan(data);
-      console.log(data.plans[0].segments);
     })
 }
 
