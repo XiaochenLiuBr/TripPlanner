@@ -68,9 +68,9 @@ function insertTripPlan(p) {
   const tripEle = document.querySelector('.my-trip');
   tripEle.innerHTML = "";
 
-  let html = `<li>
-        <i class="fas fa-walking" aria-hidden="true"></i>Walk for ${steps[0].times.durations.total} minutes
-        to stop #${steps[0].to.stop.key} - ${steps[0].to.stop.name}
+  let html = `
+      <li>
+        <i class="fas fa-walking" aria-hidden="true"></i>Walk for ${steps[0].times.durations.total} minutes to stop #${steps[0].to.stop.key} - ${steps[0].to.stop.name}
       </li>`;
 
   for(let i = 1; i < steps.length - 1; i ++) {i
@@ -94,10 +94,8 @@ function insertTripPlan(p) {
 
   html += `
     <li>
-      <i class="fas fa-walking" aria-hidden="true"></i>Walk for ${steps[steps.length - 1].times.durations.total} minutes to
-      your destination.
-    </li>
-  `;
+      <i class="fas fa-walking" aria-hidden="true"></i>Walk for ${steps[steps.length - 1].times.durations.total} minutes to your destination.
+    </li>`;
 
   tripEle.innerHTML = html;
 }
